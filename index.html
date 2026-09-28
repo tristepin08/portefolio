@@ -1,0 +1,351 @@
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --black: #0a0a0a; --white: #f4f1eb; --accent: #00ff9d; --accent2: #00c4ff;
+  --mid: #1a1a1a; --border: #2a2a2a; --text-muted: #888;
+  --mono: 'Space Mono', monospace; --sans: 'Sora', sans-serif;
+}
+body { font-family: var(--sans); background: var(--black); color: var(--white); line-height: 1.6; overflow-x: hidden; }
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.1rem 3rem;
+  background: rgba(10,10,10,0.95);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-family: var(--mono); font-size: 13px; color: var(--accent); letter-spacing: 2px; }
+.nav-links { display: flex; gap: 1.5rem; list-style: none; }
+.nav-links a { color: var(--text-muted); text-decoration: none; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; font-family: var(--mono); }
+.nav-links a:hover { color: var(--accent); }
+
+.hero { min-height: 100vh; display: flex; align-items: center; padding: 0 3rem; position: relative; overflow: hidden; }
+.hero-grid { position: absolute; inset: 0; opacity: 0.04; background-image: linear-gradient(var(--white) 1px, transparent 1px), linear-gradient(90deg, var(--white) 1px, transparent 1px); background-size: 60px 60px; }
+.hero-content { max-width: 900px; position: relative; z-index: 1; }
+.hero-tag { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; }
+.hero-tag::before { content: ''; display: block; width: 40px; height: 1px; background: var(--accent); }
+h1 { font-size: clamp(3rem, 8vw, 7rem); font-weight: 700; line-height: 1.0; margin-bottom: 1rem; letter-spacing: -2px; }
+.name-highlight { color: transparent; -webkit-text-stroke: 2px var(--accent); }
+.hero-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 520px; margin: 1.5rem 0 2.5rem; font-weight: 300; line-height: 1.8; }
+.hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+.btn-primary { padding: 0.9rem 2rem; background: var(--accent); color: var(--black); font-family: var(--mono); font-size: 13px; letter-spacing: 1px; text-decoration: none; font-weight: 700; transition: transform 0.2s; display: inline-block; cursor: pointer; border: none; }
+.btn-primary:hover { transform: translateY(-2px); }
+.btn-outline { padding: 0.9rem 2rem; border: 1px solid var(--border); color: var(--white); font-family: var(--mono); font-size: 13px; letter-spacing: 1px; text-decoration: none; transition: border-color 0.2s, color 0.2s; display: inline-block; }
+.btn-outline:hover { border-color: var(--accent2); color: var(--accent2); }
+.hero-badges { margin-top: 3rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+.badge { font-family: var(--mono); font-size: 11px; padding: 0.4rem 0.9rem; border: 1px solid var(--border); color: var(--text-muted); letter-spacing: 1px; }
+
+section { padding: 5rem 3rem; max-width: 1200px; margin: 0 auto; }
+.section-label { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 0.8rem; }
+h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; letter-spacing: -1px; margin-bottom: 3rem; line-height: 1.1; }
+.separator { width: 100%; height: 1px; background: var(--border); }
+
+/* DOC BUTTON */
+.doc-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 0.5rem 1rem;
+  background: rgba(0,255,157,0.08);
+  border: 1px solid rgba(0,255,157,0.25);
+  color: var(--accent);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 1px;
+  text-decoration: none; cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  margin-top: 1rem;
+}
+.doc-btn:hover { background: rgba(0,255,157,0.15); border-color: var(--accent); }
+.doc-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+/* SKILLS */
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.skill-card { background: var(--black); padding: 1.8rem; transition: background 0.2s; }
+.skill-card:hover { background: var(--mid); }
+.skill-icon { font-size: 22px; margin-bottom: 0.8rem; }
+.skill-name { font-size: 15px; font-weight: 600; margin-bottom: 0.4rem; }
+.skill-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+.skill-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.8rem; }
+.skill-tag { font-family: var(--mono); font-size: 10px; padding: 3px 8px; background: rgba(0,255,157,0.08); color: var(--accent); border: 1px solid rgba(0,255,157,0.2); letter-spacing: 0.5px; }
+
+/* PROJECTS */
+.projects-list { display: flex; flex-direction: column; }
+.project-item { padding: 2.5rem 0; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 80px 1fr auto; gap: 2rem; align-items: start; }
+.project-item:first-child { border-top: 1px solid var(--border); }
+.project-num { font-family: var(--mono); font-size: 13px; color: var(--text-muted); padding-top: 4px; }
+.project-title { font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 600; margin-bottom: 0.5rem; }
+.project-desc { font-size: 14px; color: var(--text-muted); max-width: 500px; }
+.project-tech { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1rem; }
+.tech-badge { font-family: var(--mono); font-size: 10px; padding: 3px 8px; border: 1px solid var(--border); color: var(--text-muted); letter-spacing: 0.5px; }
+.project-arrow { font-size: 22px; color: var(--border); transition: color 0.2s, transform 0.2s; padding-top: 4px; }
+.project-item:hover .project-arrow { color: var(--accent); transform: translate(4px, -4px); }
+
+/* VEILLE */
+.veille-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.veille-card { background: var(--black); padding: 1.8rem; transition: background 0.2s; }
+.veille-card:hover { background: var(--mid); }
+.veille-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; }
+.veille-title { font-size: 15px; font-weight: 600; max-width: 80%; }
+.veille-date { font-family: var(--mono); font-size: 10px; color: var(--text-muted); letter-spacing: 1px; white-space: nowrap; }
+.veille-source { font-family: var(--mono); font-size: 10px; color: var(--accent2); letter-spacing: 1px; margin-bottom: 0.6rem; }
+.veille-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 0.8rem; }
+.veille-cat { font-family: var(--mono); font-size: 10px; padding: 3px 8px; border: 1px solid rgba(0,196,255,0.25); color: var(--accent2); background: rgba(0,196,255,0.07); letter-spacing: 0.5px; display: inline-block; }
+.veille-intro { font-size: 15px; color: var(--text-muted); max-width: 600px; margin-bottom: 2.5rem; line-height: 1.8; }
+
+/* ABOUT */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.about-text p { font-size: 15px; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.8; }
+.about-text p strong { color: var(--white); font-weight: 600; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.stat-box { background: var(--black); padding: 1.5rem; }
+.stat-num { font-family: var(--mono); font-size: 2.5rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 0.3rem; }
+.stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+/* CONTACT */
+.contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.contact-text p { color: var(--text-muted); font-size: 15px; line-height: 1.8; }
+.contact-links { display: flex; flex-direction: column; gap: 1rem; }
+.contact-link { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.5rem; border: 1px solid var(--border); text-decoration: none; color: var(--white); font-size: 14px; transition: border-color 0.2s, color 0.2s; }
+.contact-link:hover { border-color: var(--accent); color: var(--accent); }
+.contact-link span { font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
+
+footer { border-top: 1px solid var(--border); padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; }
+.footer-copy { font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+.hero-content > * { animation: fadeUp 0.8s ease both; }
+.hero-tag { animation-delay: 0.1s; } h1 { animation-delay: 0.2s; } .hero-desc { animation-delay: 0.3s; } .hero-ctas { animation-delay: 0.4s; } .hero-badges { animation-delay: 0.5s; }
+
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; } .nav-links { display: none; }
+  .hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .project-item { grid-template-columns: 50px 1fr; } .project-arrow { display: none; }
+  footer { flex-direction: column; gap: 1rem; text-align: center; }
+}
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<nav>
+  <div class="nav-logo">SISR_PORTFOLIO</div>
+  <ul class="nav-links">
+    <li><a href="#competences">Compétences</a></li>
+    <li><a href="#projets">Projets</a></li>
+    <li><a href="#veille">Veille</a></li>
+    <li><a href="#apropos">À propos</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" style="padding-top: 80px; max-width: 100%;">
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-tag">BTS SIO • Option SISR • 2024–2026</div>
+    <h1>Abdel<br><span class="name-highlight">Sowe</span></h1>
+    <p class="hero-desc">Étudiant en BTS Services Informatiques aux Organisations, spécialisation Solutions d'Infrastructure, Systèmes et Réseaux. Passionné par l'administration système, la cybersécurité et l'infrastructure réseau.</p>
+    <div class="hero-ctas">
+      <a href="#projets" class="btn-primary">Voir mes projets</a>
+      <a href="#contact" class="btn-outline">Me contacter</a>
+    </div>
+    <div class="hero-badges">
+      <span class="badge">pentest</span>
+      <span class="badge">Cisco / Packet Tracer</span>
+      <span class="badge">pipeline ci/cd</span>
+      <span class="badge">Virtualisation</span>
+    </div>
+  </div>
+</section>
+
+<div class="separator"></div>
+
+<section id="competences">
+  <p class="section-label">// 01 — domaines de compétence</p>
+  <h2>Compétences<br>techniques</h2>
+  <div class="skills-grid">
+
+    <div class="skill-card">
+      <div class="skill-icon">🖥️</div>
+      <div class="skill-name">Systèmes & Administration</div>
+      <div class="skill-desc">Installation, configuration et administration de systèmes d'exploitation serveur.</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Windows Server</span><span class="skill-tag">Debian / Ubuntu</span><span class="skill-tag">Active Directory</span><span class="skill-tag">DNS / DHCP</span>
+      </div>
+      <a class="doc-btn" href="https://word.cloud.microsoft/open/onedrive/?docId=F5E19D242EB93AFA%21s1e6d435ed15e42ccb407db7c78911ca1&driveId=F5E19D242EB93AFA" target="_blank">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h6l3 3v9H4V2z"/><path d="M10 2v3h3"/><path d="M6 9h4M6 11h3"/></svg>
+        Voir la procédure
+      </a>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">🌐</div>
+      <div class="skill-name">Réseaux & Infrastructure</div>
+      <div class="skill-desc">Conception, mise en place et supervision d'architectures réseau locales et étendues.</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Cisco</span><span class="skill-tag">VLAN</span><span class="skill-tag">Routage</span><span class="skill-tag">Packet Tracer</span>
+      </div>
+      <a class="doc-btn" href="https://word.cloud.microsoft/open/onedrive/?docId=F5E19D242EB93AFA%21s9df44ced328845dfbfa2f5f60cba470c&driveId=F5E19D242EB93AFA" target="_blank">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h6l3 3v9H4V2z"/><path d="M10 2v3h3"/><path d="M6 9h4M6 11h3"/></svg>
+        Voir la procédure
+      </a>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">🔒</div>
+      <div class="skill-name">Cybersécurité</div>
+      <div class="skill-desc">Mise en place de solutions de sécurisation et d'analyse des vulnérabilités.</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Pare-feu / ACL</span><span class="skill-tag">VPN</span><span class="skill-tag">Wireshark</span><span class="skill-tag">Nmap</span>
+      </div>
+      <a class="doc-btn" href="https://word.cloud.microsoft/open/onedrive/?docId=F5E19D242EB93AFA%21s69d5a23f449e436d8dfa394cf6afba1c&driveId=F5E19D242EB93AFA" target="_blank">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h6l3 3v9H4V2z"/><path d="M10 2v3h3"/><path d="M6 9h4M6 11h3"/></svg>
+        Voir la procédure
+      </a>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">☁️</div>
+      <div class="skill-name">Virtualisation</div>
+      <div class="skill-desc">Déploiement et gestion d'environnements virtualisés en local.</div>
+      <div class="skill-tags">
+        <span class="skill-tag">VirtualBox</span>
+      </div>
+      <a class="doc-btn" href="https://word.cloud.microsoft/open/onedrive/?docId=F5E19D242EB93AFA%21s69d5a23f449e436d8dfa394cf6afba1c&driveId=F5E19D242EB93AFA" target="_blank">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h6l3 3v9H4V2z"/><path d="M10 2v3h3"/><path d="M6 9h4M6 11h3"/></svg>
+        Voir la procédure
+      </a>
+    </div>
+
+    
+
+
+  </div>
+</section>
+
+<div class="separator"></div>
+
+<section id="projets">
+  <p class="section-label">// 02 — réalisations</p>
+  <h2>Projets<br></h2>
+  <div class="projects-list">
+
+    <div class="project-item">
+      <div class="project-num">001</div>
+      <div>
+        <div class="project-title">Mise en place d'un pipeline CI/CD</div>
+        <div class="project-desc">Mise en place d'une infrastructure DevSecOps bloquant automatiquement les failles de sécurité applicatives et conteneurisées avant la mise en production.</div>
+        <div class="project-tech">
+          <span class="tech-badge">DevSecOps</span><span class="tech-badge">GitLab</span><span class="tech-badge">Docker</span><span class="tech-badge">Trivy</span>
+        </div>
+        <a class="doc-btn" href="https://word.cloud.microsoft/open/onedrive/?docId=F5E19D242EB93AFA%21sfe9eb3aa4aba4baba3bab7aa8000acaf&driveId=F5E19D242EB93AFA" target="_blank">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h6l3 3v9H4V2z"/><path d="M10 2v3h3"/><path d="M6 9h4M6 11h3"/></svg>
+          Dossier de projet / procédure
+        </a>
+      </div>
+      <div class="project-arrow">↗</div>
+    </div>
+
+    <div class="project-item">
+      <div class="project-num">002</div>
+      <div>
+        <div class="project-title">Homelab cybersécurité</div>
+        <div class="project-desc">Création d'un laboratoire de piratage éthique sécurisé. Segmentation du réseau avec pfSense pour isoler les flux offensifs entre Kali Linux et les serveurs cibles (Metasploitable, Debian) sans impacter l'hôte physique.</div>
+        <div class="project-tech">
+          <span class="tech-badge">Pentest</span><span class="tech-badge">Opnsense</span><span class="tech-badge">Metaspoitable</span>
+        </div>
+        <a class="doc-btn" href="https://word.cloud.microsoft/open/onedrive/?docId=F5E19D242EB93AFA%21s69d5a23f449e436d8dfa394cf6afba1c&driveId=F5E19D242EB93AFA" target="_blank">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h6l3 3v9H4V2z"/><path d="M10 2v3h3"/><path d="M6 9h4M6 11h3"/></svg>
+          Dossier de projet / procédure
+        </a>
+      </div>
+      <div class="project-arrow">↗</div>
+    </div>
+
+    <div class="project-item">
+      <div class="project-num">003</div>
+      <div>
+        <div class="project-title">Réseaux et infrastructure</div>
+        <div class="project-desc">Conception, mise en place et supervision d'architectures réseau locales et étendues.</div>
+        <div class="project-tech">
+          <span class="tech-badge">Cisco</span><span class="tech-badge">vlan</span><span class="tech-badge">fail2ban</span><span class="tech-badge">OpenSSH</span>
+        </div>
+        <a class="doc-btn" href="projet3-securisation-linux.pdf" target="_blank">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h6l3 3v9H4V2z"/><path d="M10 2v3h3"/><path d="M6 9h4M6 11h3"/></svg>
+          Dossier de projet / procédure
+        </a>
+      </div>
+      <div class="project-arrow">↗</div>
+    </div>
+
+    
+  </div>
+</section>
+
+<div class="separator"></div>
+
+<section id="veille">
+  <p class="section-label">// 03 — veille technologique</p>
+  <h2>Veille<br>technologique</h2>
+  <p class="veille-intro">Suivi régulier des évolutions du domaine SISR : cybersécurité, infrastructures, protocoles réseau et nouvelles technologies cloud.</p>
+  <div class="veille-grid">
+
+    <div class="veille-card">
+      <div class="veille-header">
+        <div class="veille-title">Vers l'AGI (Intelligence Artificielle Générale)</div>
+        <div class="veille-date">JANVIER 2026</div>
+      </div>
+      <div class="veille-source">SOURCE : YOUTUBE / OPEN AI</div>
+      <div class="veille-desc">L'AGI représente le passage d'une IA outil, capable de répondre à des commandes, à une IA partenaire, capable de comprendre le contexte, de raisonner par abstraction et de planifier des actions complexes de manière autonome pour atteindre un objectif.</div>
+      <span class="veille-cat">INTELLIGENCE ARTIFICIELLE</span>
+      <br>
+      <a class="doc-btn" href="https://word.cloud.microsoft/open/onedrive/?docId=F5E19D242EB93AFA%21s9ad2f5b94a0f48ada1053f40be9ec81d&driveId=F5E19D242EB93AFA" target="_blank">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h6l3 3v9H4V2z"/><path d="M10 2v3h3"/><path d="M6 9h4M6 11h3"/></svg>
+        Lire le document de veille
+      </a>
+    </div>
+
+    
+  </div>
+</section>
+
+<div class="separator"></div>
+
+<section id="apropos">
+  <p class="section-label">// 04 — à propos</p>
+  <h2>Mon parcours</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>Je m'appelle <strong>Abdel Sowe</strong>, étudiant en 1ère année de BTS SIO option SISR.</p>
+      <p>Passionné par les infrastructures informatiques depuis le lycée, j'ai choisi la spécialité SISR pour me spécialiser dans la cybersécurité</strong>, domaine où j'envisage de poursuivre en Bachelor ou en alternance.</p>
+      <p>En dehors de la formation, je pratique régulièrement des challenges sur <strong>TryHackMe</strong> et <strong>Root-Me</strong> pour approfondir mes compétences en cybersécurité.</p>
+    </div>
+    <div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-num">2</div><div class="stat-label">Ans de formation</div></div>
+        <div class="stat-box"><div class="stat-num">3</div><div class="stat-label">Projets E4/E5</div></div>
+        <div class="stat-box"><div class="stat-num">1</div><div class="stat-label">Stages en entreprise</div></div>
+        <div class="stat-box"><div class="stat-num">6</div><div class="stat-label">Technologies maîtrisées</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="separator"></div>
+
+<section id="contact">
+  <p class="section-label">// 05 — contact</p>
+  <div class="contact-inner">
+    <div class="contact-text">
+      <h2>Travaillons<br>ensemble.</h2>
+      <p>Disponible pour un stage, une alternance ou toute opportunité en lien avec l'administration systèmes et réseaux. N'hésitez pas à me contacter.</p>
+    </div>
+    <div class="contact-links">
+      <a href="" class="contact-link">soweabdel@gmail.com<span>EMAIL ↗</span></a>
+      <a href="https://www.linkedin.com/feed/" class="contact-link">LinkedIn<span>PROFIL ↗</span></a>
+      <a href="https://github.com/" class="contact-link">GitHub<span>CODE ↗</span></a>
+      <a href="cv-prenom-nom.pdf" class="contact-link">CV<span>PDF ↗</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-copy">© 2026 — sowe abdel— BTS SIO SISR</div>
+  <div class="footer-copy" style="color: var(--accent);">Disponible pour alternance</div>
+</footer>
